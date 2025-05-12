@@ -11,11 +11,25 @@ profileRouter.get('/', authUser, async (req, res) => {
     try {
 
         const authenticatedUser = req.user;
-        res.send(authenticatedUser);
+        res.status(200).json({
+            message: "Success",
+            response: {
+                _id: authenticatedUser._id,
+                firstName: authenticatedUser.firstName,
+                lastName: authenticatedUser.lastName,
+                email: authenticatedUser.email,
+                photoUrl: authenticatedUser.photoUrl,
+                age: authenticatedUser.age,
+                gender: authenticatedUser.gender,
+                phoneNumber: authenticatedUser.phoneNumber,
+                about: authenticatedUser.about,
+                skills: authenticatedUser.skills
+            }
+        });
 
     } catch (err) {
         res.status(400).json({
-            message: `Error While Getting Profile: ${err.message}`,
+            message: `${err.message}`,
         })
     }
 });
@@ -31,10 +45,12 @@ profileRouter.patch('/update', authUser, async (req, res) => {
 
         await userTobeUpdate.save();
 
-        res.send("Profile Updated")
+        res.status(200).json({
+            message: "Success",
+        })
     } catch (err) {
         res.status(400).json({
-            message: `Error While Updating Profile: ${err.message}`,
+            message: `${err.message}`,
         })
     }
 })

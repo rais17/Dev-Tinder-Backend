@@ -19,10 +19,12 @@ authRouter.post("/signup", async (req, res) => {
         const user = new User({...userObj, password: hashPassword}); // Creating new instance of User model
 
         await user.save();
-        res.send("Signup Successfully");
+        res.status(200).json({
+            message: "Success"
+        });
     } catch (err) {
         res.status(400).json({
-            message: `Error While Signup: ${err.message}`,
+            message: `${err.message}`,
         })
     }
 })
@@ -43,11 +45,24 @@ authRouter.post("/login", async (req, res) => {
         const token = isExistingUser.getJWTToken();
 
         res.cookie("token", token);
-        res.send("Login Successfully");
+        res.status(200).json({
+            message: "Login Successfully",
+            response: {
+                _id: isExistingUser._id,
+                firstName: isExistingUser.firstName,
+                lastName: isExistingUser.lastName,
+                photoUrl: isExistingUser.photoUrl,
+                gender: isExistingUser.gender,
+                age: isExistingUser.age,
+                phoneNumber: isExistingUser.phoneNumber,
+                skills: isExistingUser.skills,
+                about: isExistingUser.about
+            }
+        });
 
     } catch (err) {
         res.status(400).json({
-            message: `Error While Login: ${err.message}`,
+            message: `${err.message}`,
         })
     }
 })
@@ -56,8 +71,10 @@ authRouter.post("/logout", async (req, res) => {
     try {
         res.cookie("token", null, {
             expires: new Date(Date.now())
-        })
-            .send("Logout Successfully");
+        });
+        res.status(200).json({
+            message: "Success"
+        });
     } catch (err) {
         res.status(400).json({
             message: `Error While Logout: ${err.message}`,

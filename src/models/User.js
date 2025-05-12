@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
         validate(value) {
-            if (!["male", "female", "other"].includes(value))
+            if (!["Male", "Female", "Other"].includes(value))
                 throw new Error("Invalid Gender Type");
         }
     },
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         validate(value) {
-            if (!validator.isMobilePhone(value)) throw new Error("Phone is Invalid")
+            if (value && !validator.isMobilePhone(value)) throw new Error("Phone is Invalid")
         }
     },
     photoUrl: {
@@ -55,7 +55,13 @@ const userSchema = new mongoose.Schema({
         validate(value) {
             if (!validator.isURL(value)) throw new Error("URL is Invalid")
         },
-        default: "https://www.ihna.edu.au/blog/wp-content/uploads/2022/10/user-dummy.png"
+        default: "https://ongcvidesh.com/wp-content/uploads/2019/08/dummy-image.jpg"
+    },
+    about: {
+        type: String
+    },
+    skills: {
+        type: [String]
     }
     },
     {timestamps: true}

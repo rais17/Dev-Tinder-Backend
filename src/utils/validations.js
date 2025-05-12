@@ -17,9 +17,10 @@ const validateRequest = (userObj, USER_ALLOWED_VALUE, REQUIRED_FIELDS=[], rqFiel
         }
     }
 
-  // 3. Check empty values for ALL PROVIDED FIELDS (including optional ones)
+  // 3. Check empty values for ALL PROVIDED FIELDS (excluding optional ones)
   for (const [key, value] of Object.entries(userObj)) {
-    if (!value) throw new Error(`Field '${key}' cannot be empty`);
+    if(key === 'firstName' || key === 'lastName' || key === 'email' || key === 'password')
+      if (!value) throw new Error(`Field '${key}' cannot be empty`);
   }
 };
 

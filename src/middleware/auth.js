@@ -15,7 +15,7 @@ const authAdmin = (req, res, next) => {
 const authUser = async (req, res, next) => {
     try {
         const { token } = req.cookies;
-        if (!token) throw new Error("Invalid Token");
+        if (!token) return res.status(401).json({message: "Invalid Token"});
 
         const decodedToken = jwt.verify(token, "DEV@TINDER$123");
         if (!decodedToken) throw new Error("Token Verification Fails");
@@ -29,7 +29,9 @@ const authUser = async (req, res, next) => {
         req.user = isUserExist;
         next();
     } catch (err) {
-        res.status(400).send(err.message);
+        res.status(400).json({
+            message: err.message
+        });
     }
 }
 

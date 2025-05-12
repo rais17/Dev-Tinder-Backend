@@ -6,7 +6,9 @@ const USER_ALLOWED_VALUE = [
     "gender",
     "age",
     "photoUrl",
-    "phoneNumber"
+    "phoneNumber",
+    "about",
+    "skills"
 ];
 
 const PROFILE_UPDATE_ALLOWED_VALUE = [
@@ -15,7 +17,9 @@ const PROFILE_UPDATE_ALLOWED_VALUE = [
     "gender",
     "age",
     "photoUrl",
-    "phoneNumber"
+    "phoneNumber",
+    "about",
+    "skills"
 ];
 
 const REQUIRED_FIELDS = [

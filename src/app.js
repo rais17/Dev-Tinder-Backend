@@ -1,19 +1,27 @@
 const express = require("express");
 const connectDB = require("./config/database.js");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const authRouter = require("./routes/auth.js");
 const profileRouter = require("./routes/profile.js");
 const requestRouter = require('./routes/request.js');
+const userRouter = require("./routes/user.js")
 
 const app = express();
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/request', requestRouter);
+app.use('/user', userRouter);
+
 
 
 connectDB()
