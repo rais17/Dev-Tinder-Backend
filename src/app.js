@@ -11,7 +11,7 @@ const userRouter = require("./routes/user.js")
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://13.61.174.243'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
@@ -28,7 +28,7 @@ app.use('/user', userRouter);
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
-        app.listen(7777, () => {
+        app.listen(7777, '0.0.0.0', () => {
             console.log("Server is successfully runs on the PORT 7777");
         });
     })
