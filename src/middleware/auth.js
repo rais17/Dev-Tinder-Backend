@@ -4,7 +4,6 @@ const User = require("../models/User")
 const authAdmin = (req, res, next) => {
     let token = 'xyz';
     let isAdminAuthenticated = token === 'xyz';
-    console.log("Admin Auth Code Runs Here")
     if (!isAdminAuthenticated) {
         res.status(401).send("Unauthorized Request")
     } else {
@@ -17,7 +16,7 @@ const authUser = async (req, res, next) => {
         const { token } = req.cookies;
         if (!token) return res.status(401).json({message: "Invalid Token"});
 
-        const decodedToken = jwt.verify(token, "DEV@TINDER$123");
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         if (!decodedToken) throw new Error("Token Verification Fails");
 
         const { _id } = decodedToken;

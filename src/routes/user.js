@@ -44,8 +44,6 @@ userRouter.get("/connections", authUser, async (req, res) => {
     if (!connections)
       return res.status(404).json({ message: "No One Likes You To Connect" });
 
-    console.log(connections)
-
     const filteredConnections = connections.map((connection) => {
       return connection.fromUserId._id.equals(loggedUser._id) ? connection.toUserId : connection.fromUserId;
     });

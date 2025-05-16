@@ -79,7 +79,7 @@ userSchema.methods.verifyPassword = async function (userInputPassword) {
 
 userSchema.methods.getJWTToken = function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id }, "DEV@TINDER$123", { expiresIn: '1h' });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     if (!token) throw new Error("Error while Generating Token")
     return token;
 }
