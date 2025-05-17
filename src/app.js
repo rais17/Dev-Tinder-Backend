@@ -1,4 +1,6 @@
 require('dotenv').config();
+// require("./utils/nodemailer.js");
+
 const express = require("express");
 const connectDB = require("./config/database.js");
 const cookieParser = require("cookie-parser");
@@ -31,6 +33,7 @@ connectDB()
         console.log("Database connected successfully");
         app.listen(process.env.PORT, '0.0.0.0', () => {
             console.log("Server is successfully runs on the PORT 7777");
+            require("./utils/scheduleCronJob.js")
         });
     })
     .catch((err) => console.error("Error while conneting Database", err));
