@@ -50,7 +50,7 @@ function initializeSocketConnection(server) {
                 socket.join(room);
 
             } catch (err) {
-                socket.emit('error', `Connection failed: ${err.message}`);
+                socket.emit('error', `Connection failed: ${err?.message}`);
             }
         });
 
@@ -74,14 +74,14 @@ function initializeSocketConnection(server) {
                 if (!chat) throw new Error("Server Error");
                 await chat.save();
 
-                const latestMessage = chat.messages[chat.messages.length - 1];
+                const latestMessage = chat?.messages[chat?.messages?.length - 1];
 
                 const response = {
-                    _id: latestMessage._id,
-                    senderId: latestMessage.senderId,
+                    _id: latestMessage?._id,
+                    senderId: latestMessage?.senderId,
                     message: message,
-                    createdAt: latestMessage.createdAt,
-                    updatedAt: latestMessage.updatedAt
+                    createdAt: latestMessage?.createdAt,
+                    updatedAt: latestMessage?.updatedAt
                 }
 
                 const room = [_id, toUserId].sort().join("_");
