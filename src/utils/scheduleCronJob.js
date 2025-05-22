@@ -1,31 +1,30 @@
 const cron = require("node-cron");
 const Connections = require("../models/Connections");
 const { subDays, startOfDay, endOfDay } = require("date-fns");
-const transporter = require('./nodemailer');
+const transporter = require("./nodemailer");
 
 cron.schedule("0 8 * * *", async () => {
-
     try {
-
         const yesterday = subDays(new Date(), 1);
         const yesterdayStartOfDay = startOfDay(yesterday);
         const yesterdayEndOfDay = endOfDay(yesterday);
 
         const requests = await Connections.find({
-            status: 'interested',
+            status: "interested",
             $and: [
                 { createdAt: { $gte: yesterdayStartOfDay } },
-                { createdAt: { $lt: yesterdayEndOfDay } }
-
-            ]
-        }).populate("fromUserId", "firstName lastName email")
+                { createdAt: { $lt: yesterdayEndOfDay } },
+            ],
+        })
+            .populate("fromUserId", "firstName lastName email")
             .populate("toUserId", "firstName lastName email");
 
         const pendingRequest = {};
 
         requests.forEach((request) => {
             const toEmail = request.toUserId.email;
-            if (!pendingRequest.hasOwnProperty(toEmail)) pendingRequest[toEmail] = new Set();
+            if (!pendingRequest.hasOwnProperty(toEmail))
+                pendingRequest[toEmail] = new Set();
             pendingRequest[toEmail].add(request.fromUserId);
         });
 
@@ -40,9 +39,8 @@ cron.schedule("0 8 * * *", async () => {
             subject: "Pending Request",
             text: "You Have Connection Request Pending From Yesterday", // plain‑text body
             html: "<b>You Have Connection Request Pending From Yesterday</b>", // HTML body
-        })
-
+        });
     } catch (error) {
-        console.error('Error in Cron Schedule', error);
+        console.error("Error in Cron Schedule", error);
     }
-})
+});
