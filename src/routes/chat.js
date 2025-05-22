@@ -31,13 +31,17 @@ chatRouter.get('/:toUserId', authUser, async (req, res) => {
             participants: { $all: [_id, toUserId] }
         }).populate("messages.senderId", "firstName lastName photoUrl");
 
-        const reversed = [...chat?.messages]?.reverse();
-        const messages = reversed?.slice(skip, skip + limit)?.reverse();
+        let reversed;
+        let messages;
+        if (chat) {
+            reversed = [...chat?.messages]?.reverse();
+            messages = reversed?.slice(skip, skip + limit)?.reverse();
+        }
         
 
         res.status(200).json({
             message: "Success",
-            length: messages?.length,
+            length: messages?.length || 0,
             response: {
                 messages: messages || []
             }
